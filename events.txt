@@ -1,0 +1,2 @@
+1 student1@vgtu.org electricalengg@vgtu.org 13:50 17:30
+3 student1@vgtu.org discretemaths@vgtu.org 14:00 14:30

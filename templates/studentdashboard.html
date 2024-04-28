@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{url_for("static", filename="styles2.css")}}" />
+    <link rel="icon" type="image/x-icon" href="{{url_for("static", filename="vgtu.jpeg")}}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-lg text-center">{{ current_user.get_name() }}'s Dashboard</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Teacher Name</th>
+                        <th>Available Hours</th>
+                        <th>Event Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for teacher in teachers %}
+                    <tr>
+                        <td>{{ teacher.subject }}</td>
+                        <td>{{ teacher.name }}</td>
+                        <td>{{ teacher.get_hours() }}</td>
+                        <td>
+                            {% if teacher is defined and teacher is not none and teacher.__class__.__name__ == 'LabTeacher'%}
+                                unavailable
+                            {% else %}
+                                {% if current_user.event_exists(teacher.email) %}
+                                Created
+                                {% else %}
+                                <form action="/studentdashboard" method="POST">
+                                    <input type="hidden" name="action" value="create_event">
+                                    <input type="hidden" name="teacher_email" value="{{ teacher.email }}">
+                                    <button type="submit" class="button">Create Event</button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table-container">
+            <h3 class="text-lg text-center">Current Events</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event No</th>
+                        <th>Teacher</th>
+                        <th>Timing</th>
+                        <th>Comments</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for act in current_user.currentevents %}
+                    <tr>
+                        <td>{{ act.eventno }}</td>
+                        <td>{{ current_user.get_teacher_name(act.teacher_email, teachers) }}</td>
+                        <td>{{ act.starttime }} to {{ act.endtime }}</td>
+                        <td>
+                            {% for comm in act.updates %}
+                                 ({{ comm[0] }}) :- {{ comm[1] }} : {{ comm[2] }} <br>
+                            {% endfor %}
+                        </td>
+                        <td> 
+                            <form action="/studentdashboard" method="POST"> 
+                                <input type="hidden" name="action" value="add_comment"> 
+                                <input type="hidden" name="event_no" value="{{ act.eventno }}"> 
+                                <button type="submit" class="button">Add Comment</button> 
+                            </form>
+                            <form action="/studentdashboard" method="POST"> 
+                                <input type="hidden" name="action" value="delete_event"> 
+                                <input type="hidden" name="event_no" value="{{ act.eventno }}"> 
+                                <button type="submit" class="button">Delete Event</button> 
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
