@@ -64,9 +64,13 @@ class consultation_hour:
                 if len(current_comment_data) < 4:
                     print("issue with current event format", current_comment_data)
                     continue
+                event_number = current_comment_data[0]
+                date = current_comment_data[1]
+                email = current_comment_data[2]
+                message = " ".join(current_comment_data[3:])
                 for event in all_user_events:
                     if event.eventno == current_comment_data[0]:
-                        event.updates.append((current_comment_data[1], current_comment_data[2], current_comment_data[3]))
+                        event.updates.append((date, email, message))
         return all_user_events
     
     @handle_file_errors

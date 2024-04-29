@@ -1,0 +1,2 @@
+1 2024-04-29 student1@vgtu.org I would like to review some notes
+3 2024-04-29 student1@vgtu.org have a question on linearity1 2024-04-29 student1@vgtu.org specifically on transformers

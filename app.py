@@ -188,7 +188,16 @@ def dashboard():
             else:
                 eve_no = request.form['event_no']
                 current_user.set_event(int(eve_no))
-            return redirect("/studentdashboard/comment")
+                if 'comment' in request.form:
+                    print("there was a comment")
+                    comment = request.form['comment']
+                    for event in current_user.currentevents:
+                        print( "my event no", event.eventno)
+                        print('received eve no', eve_no)
+                        if event.eventno == eve_no:  
+                            print("found event in my events")
+                            event.add_comment(eve_no, current_user.email, comment)
+                            return redirect("/studentdashboard")
     return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers)
 
 
@@ -199,21 +208,22 @@ def event_append():
         flash("User not found or session expired.", "error")
         return redirect('/')
     current_user = current_person
-
+    eve_no = request.args.get('event_no')
     if request.method == 'POST':
         print("Received a POST request to /studentdashboard/comment")
         print("Form Data:", request.form)
         eve_no = request.form['event_no']
-        current_user.set_event(eve_no)
-        if 'comment' in request.form:
-            comment = request.form['comment']
-            for event in current_user.currentevents:
-                if event.eventno == current_user.get_event(eve_no):
-                    print("found event in my events")
-                    event.add_comment(eve_no, current_user.email, comment)
-                    return redirect("/studentdashboard")
+        if eve_no:
+            current_user.set_event(eve_no)
+            if 'comment' in request.form:
+                comment = request.form['comment']
+                for event in current_user.currentevents:
+                    if event.eventno == int(eve_no):  
+                        print("found event in my events")
+                        event.add_comment(eve_no, current_user.email, comment)
+                        return redirect("/studentdashboard")
                 
-    return render_template("studentdashboardcomment.html", current_user=current_user, teachers=Teachers)
+    return render_template("studentdashboardcomment.html", current_user=current_user, teachers=Teachers, eve_no=eve_no)
 
 
 if __name__ == "__main__":
