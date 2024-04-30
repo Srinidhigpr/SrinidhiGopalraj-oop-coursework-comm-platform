@@ -101,7 +101,8 @@ class consultation_hour:
         timestamp = datetime.now().strftime("%Y-%m-%d")
         self.updates.append((timestamp, user_email, comment))
         with open('comments.txt', 'a') as f:
-            f.write(f"{event_no} {timestamp} {user_email} {comment}")
+            f.write(f"{event_no} {timestamp} {user_email} {comment}\n")
+            print("comment printed from event class side")
         return
     
     def print_comments(self):

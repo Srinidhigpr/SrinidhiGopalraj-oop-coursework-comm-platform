@@ -4,7 +4,7 @@ from datetime import time
 from eventhandling import consultation_hour, consultation_no
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'newtons/apple'
+app.config['SECRET_KEY'] = 'newtonsapple'
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600
 
 class User:
@@ -71,6 +71,7 @@ class CurrentUserStudent(CurrentUser, Student):
         self.currentevents = consultation_hour.get_consultations_request(self.email)
 
     def append_event(self, Event):
+        print("event added from class side")
         self.currentevents.append(Event)
 
     def get_teacher_name(self, email, teachers_list):
@@ -160,7 +161,8 @@ def dashboard():
     if current_person is None or current_person.email != session['email']:
         flash("User not found.", "error")
         return redirect('/')
-    current_user = current_person 
+    current_user = current_person
+    current_user_events = current_user.currentevents 
 
     if request.method == 'POST':
         if request.method == 'POST':
@@ -176,11 +178,12 @@ def dashboard():
                 current_eventno = consultation_no() + 1
                 new_event = consultation_hour(current_eventno, current_user.email, teacher_email, startime, endtime)
                 consultation_hour.add_consultation_request(current_eventno, current_user.email, teacher_email, current_user.format_time(startime), current_user.format_time(endtime))
-                current_user.append_event(new_event)
+                current_user.currentevents.append(new_event)
+                print("event appended from app side")
                 return redirect("/studentdashboard")
             elif action == 'delete_event':
                 eve_no = request.form['event_no']
-                for event in current_user.currentevents:
+                for event in current_user_events:
                     if eve_no == event.eventno:
                         current_user.currentevents.remove(event)
                         consultation_hour.remove_consultation_request(eve_no)
@@ -191,39 +194,16 @@ def dashboard():
                 if 'comment' in request.form:
                     print("there was a comment")
                     comment = request.form['comment']
-                    for event in current_user.currentevents:
+                    for event in current_user_events:
                         print( "my event no", event.eventno)
                         print('received eve no', eve_no)
-                        if event.eventno == eve_no:  
+                        if int(event.eventno) == int(eve_no):  
                             print("found event in my events")
                             event.add_comment(eve_no, current_user.email, comment)
+                            print("comment added from app side")
                             return redirect("/studentdashboard")
     return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers)
 
-
-@app.route("/studentdashboard/comment", methods=['GET', 'POST'])
-def event_append():
-    current_person = CurrentUserStudent._instance
-    if current_person is None or current_person.email != session.get('email'):
-        flash("User not found or session expired.", "error")
-        return redirect('/')
-    current_user = current_person
-    eve_no = request.args.get('event_no')
-    if request.method == 'POST':
-        print("Received a POST request to /studentdashboard/comment")
-        print("Form Data:", request.form)
-        eve_no = request.form['event_no']
-        if eve_no:
-            current_user.set_event(eve_no)
-            if 'comment' in request.form:
-                comment = request.form['comment']
-                for event in current_user.currentevents:
-                    if event.eventno == int(eve_no):  
-                        print("found event in my events")
-                        event.add_comment(eve_no, current_user.email, comment)
-                        return redirect("/studentdashboard")
-                
-    return render_template("studentdashboardcomment.html", current_user=current_user, teachers=Teachers, eve_no=eve_no)
 
 
 if __name__ == "__main__":
