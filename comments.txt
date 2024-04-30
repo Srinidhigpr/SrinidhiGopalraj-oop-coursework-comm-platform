@@ -1,2 +1,4 @@
-11 2024-04-30 student3@vgtu.org hi there
-23 2024-04-30 student3@vgtu.org my defense is prepared
+21 2024-04-30 student3@vgtu.org understood professor comp arc
+23 2024-04-30 student3@vgtu.org last lecture !
+23 2024-04-30 english@vgtu.org I would like to review some notes
+15 2024-04-30 english@vgtu.org you have 1 defense

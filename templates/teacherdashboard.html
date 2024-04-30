@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{url_for("static", filename="styles2.css")}}" />
+    <link rel="icon" type="image/x-icon" href="{{url_for("static", filename="vgtu.jpeg")}}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-lg text-center">{{ current_user.get_name() }}'s Dashboard</h2>
+        <div class="table-container">
+            <h3 class="text-lg text-center">Your Events</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event No</th>
+                        <th>Student</th>
+                        <th>Comments</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for act in current_user.currentevents %}
+                    <tr>
+                        <td>{{ act.eventno }}</td>
+                        <td>{{ current_user.get_student_name(act.student_email, students) }}</td>
+                        <td>
+                            {% for comm in act.updates %}
+                                 ({{ comm[0] }}) :- {{ comm[1] }} : {{ comm[2] }} <br>
+                            {% endfor %}
+                        </td>
+                        <td> 
+                            <form action="/teacherdashboard" method="POST"> 
+                                <input type="hidden" name="action" value="add_comment"> 
+                                <input type="hidden" name="event_no" value="{{ act.eventno }}"> 
+                                <input type="text" class="form-control" id="comment" placeholder="Type Comment" name="comment">
+                                <button type="submit" class="button">Add Comment</button> 
+                            </form>
+                            <form action="/teacherdashboard" method="POST"> 
+                                <input type="hidden" name="action" value="delete_event"> 
+                                <input type="hidden" name="event_no" value="{{ act.eventno }}"> 
+                                <button type="submit" class="button">Delete Event</button> 
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <div class="text-center">
+                    <form action="/teacherdashboard" method="POST"> 
+                        <input type="hidden" name="action" value="logout"> 
+                        <button type="submit" class="button">Logout</button> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
