@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from eventhandling import consultation_hour
 
+
 class User:
     def __init__(self, email, name, password):
         self.email = email
@@ -101,3 +102,16 @@ class UserFactory:
             return CurrentUserTeacher(email, name, 0)
         else:
             raise ValueError("Invalid user role")
+        
+Teachers = [TheoryTeacher("english@vgtu.org", "Aleksandra","123", time(10,0), time(12, 0), "English" ),
+             TheoryTeacher("comparc@vgtu.org", "Vytautas", "456", time(13, 15), time(14, 0), "Computer Architecture" ), 
+             LabTeacher("Complab@vgtu.org", "Valentinas", "789", time(0, 0), time(0, 0), "Computer Architecture Lab"),
+             TheoryTeacher("discretemaths@vgtu.org", "Julia","123", time(14,0), time(14, 30), "Discrete Mathematics" ),
+             TheoryTeacher("electricalengg@vgtu.org", "Sebastian", "456", time(13, 50), time(17, 30), "Electrical Engineering" ), 
+             LabTeacher("matlab@vgtu.org", "Julia", "789", time(0, 0), time(0, 0), "Integrals Lab")]
+
+Students = [Student("student1@vgtu.org", "Srinidhi", "123"), 
+            Student("student2@vgtu.org", "Ignas", "456",), 
+            Student("student3@vgtu.org", "Shyngys", "789"),
+            Student("student4@vgtu.org", "Togzhan", "123"), 
+            Student("student5@vgtu.org", "Ravan", "456",)]

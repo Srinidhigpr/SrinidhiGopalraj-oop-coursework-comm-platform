@@ -1,24 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, flash
-from datetime import time
 from eventhandling import consultation_hour, consultation_no
-from userhandling import UserFactory, CurrentUserTeacher, CurrentUserStudent, Student, TheoryTeacher, LabTeacher
+from userhandling import UserFactory, CurrentUserTeacher, CurrentUserStudent, Students, Teachers
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'newtonsapple'
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600
-
-Teachers = [TheoryTeacher("english@vgtu.org", "Aleksandra","123", time(10,0), time(12, 0), "English" ),
-             TheoryTeacher("comparc@vgtu.org", "Vytautas", "456", time(13, 15), time(14, 0), "Computer Architecture" ), 
-             LabTeacher("Complab@vgtu.org", "Valentinas", "789", time(0, 0), time(0, 0), "Computer Architecture Lab"),
-             TheoryTeacher("discretemaths@vgtu.org", "Julia","123", time(14,0), time(14, 30), "Discrete Mathematics" ),
-             TheoryTeacher("electricalengg@vgtu.org", "Sebastian", "456", time(13, 50), time(17, 30), "Electrical Engineering" ), 
-             LabTeacher("matlab@vgtu.org", "Julia", "789", time(0, 0), time(0, 0), "Integrals Lab")]
-
-Students = [Student("student1@vgtu.org", "Srinidhi", "123"), 
-            Student("student2@vgtu.org", "Ignas", "456",), 
-            Student("student3@vgtu.org", "Shyngys", "789"),
-            Student("student4@vgtu.org", "Togzhan", "123"), 
-            Student("student5@vgtu.org", "Ravan", "456",)]
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -81,16 +67,16 @@ def dashboard():
                 
             current_eventno = consultation_no() + 1
             new_event = consultation_hour(current_eventno, current_user.email, teacher_email, startime, endtime)
-            consultation_hour.add_consultation_request(current_eventno, current_user.email, teacher_email, current_user.format_time(startime), current_user.format_time(endtime))
+            message = consultation_hour.add_consultation_request(new_event, current_eventno, current_user.email, teacher_email, current_user.format_time(startime), current_user.format_time(endtime))
+            print(message)
             current_user.currentevents.append(new_event)
-            print("event appended from app side")
             return redirect("/studentdashboard")
         elif action == 'delete_event':
             eve_no = request.form['event_no']
             for event in current_user_events:
                 if eve_no == event.eventno:
+                    message = consultation_hour.remove_consultation_request(event, eve_no)
                     current_user.currentevents.remove(event)
-                    consultation_hour.remove_consultation_request(eve_no)
                     return redirect("/studentdashboard")
         elif action == 'add_comment':
             eve_no = request.form['event_no']
@@ -126,8 +112,8 @@ def teachdashboard():
             eve_no = request.form['event_no']
             for event in current_user_events:
                 if eve_no == event.eventno:
+                    message = consultation_hour.remove_consultation_request(event, eve_no)
                     current_user.currentevents.remove(event)
-                    consultation_hour.remove_consultation_request(eve_no)
                     return redirect("/teacherdashboard")
         elif action == 'add_comment':
             eve_no = request.form['event_no']

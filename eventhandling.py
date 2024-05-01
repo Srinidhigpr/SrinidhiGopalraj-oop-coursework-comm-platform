@@ -1,4 +1,25 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from abc import ABC, abstractmethod
+
+class Observer(ABC):
+    @abstractmethod
+    def update(self, event):
+        pass
+
+class EventNotification(Observer):
+
+    def update(self, event):
+        time_left = event.time_until_event()
+        time_left_hours = round(time_left / 60, 2)
+        print("in event create observer")
+        return (f"Notification: You have {time_left_hours} hours until the consultation starts.")
+
+class EventDeletionNotification(Observer):
+
+    def update(self, event):
+        print("in event delete observer")
+        return(f"Notification: Consultation with {event.teacher_email} deleted.")
+
 
 def handle_file_errors(func):
     def wrapper(*args, **kwargs):
@@ -38,12 +59,14 @@ class consultation_hour:
     def add_observer(self, observer):
         self.observers.append(observer)
 
-    def remove_observer(self, observer):
-        self.observers.remove(observer)
-
-    def notify_observers(self):
-        for observer in self.observers:
-            observer.update(self)
+    def notify_observers(self, observer, event):
+        print("in notify observers")
+        for ob in self.observers:
+            if type(ob) == type(observer):
+                print("found observer")
+                return ob.update(event)
+        return "Observer not found "
+                
     
     @handle_file_errors
     @staticmethod
@@ -56,8 +79,11 @@ class consultation_hour:
                     print("issue with current event format", current_event_data)
                     continue
                 if current_event_data[1] == email or current_event_data[2] == email:
+                    print("got an event for user")
                     current_event = consultation_hour(current_event_data[0], current_event_data[1], current_event_data[2], current_event_data[3], current_event_data[4])
                     all_user_events.append(current_event)
+                    current_event.add_observer(EventNotification())
+                    current_event.add_observer(EventDeletionNotification())
         with open('comments.txt', 'r') as f:
             for line in f:
                 current_comment_data = line.strip().split()
@@ -71,11 +97,12 @@ class consultation_hour:
                 for event in all_user_events:
                     if event.eventno == current_comment_data[0]:
                         event.updates.append((date, email, message))
+        
         return all_user_events
     
     @handle_file_errors
     @staticmethod
-    def remove_consultation_request(event_no):
+    def remove_consultation_request(event, event_no):
         with open('events.txt', "r") as f:
             events = f.readlines()
             updated_events = [event for event in events if not event.startswith(event_no)]
@@ -86,15 +113,18 @@ class consultation_hour:
             updated_events = [comment for comment in comments if not comment.startswith(event_no)]
         with open('comments.txt', "w") as f:
             f.writelines(updated_events)
-            return
+        
+            return event.notify_observers(EventDeletionNotification())
         
     @handle_file_errors
     @staticmethod
-    def add_consultation_request(curr_no, student_email, teacher_email, start, end):
+    def add_consultation_request(event, curr_no, student_email, teacher_email, start, end):
         with open('events.txt', "a") as f:
             f.write(f"{curr_no} {student_email} {teacher_email} {start} {end}\n")
             print("Event added successfully.")
-            return 
+            event.add_observer(EventNotification())
+            event.add_observer(EventDeletionNotification())
+            return event.notify_observers(EventNotification(), event)
 
     @handle_file_errors    
     def add_comment(self, event_no, user_email, comment):
@@ -111,3 +141,20 @@ class consultation_hour:
             comments += f"{comm[0]} {comm[1]}: {comm[2]}"
         return comments
     
+    def time_until_event(self):
+        current_time = datetime.now().time()
+        time_obj_str = self.starttime.strftime("%H:%M")  # Convert to string
+        time_obj = datetime.strptime(time_obj_str, "%H:%M").time()
+        if current_time > time_obj:
+            next_day = datetime.now() + timedelta(days=1)
+            time_obj = datetime.combine(next_day, time_obj).time()
+    
+        current_datetime = datetime.now()
+        event_datetime = datetime.combine(datetime.today(), time_obj)
+        if event_datetime < current_datetime:
+            event_datetime += timedelta(days=1)
+        time_difference_seconds = (event_datetime - current_datetime).total_seconds()
+        time_difference_minutes = max(0, time_difference_seconds // 60)
+
+        return time_difference_minutes
+

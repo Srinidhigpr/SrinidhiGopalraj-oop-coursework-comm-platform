@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{url_for("static", filename="styles2.css")}}" />
     <link rel="icon" type="image/x-icon" href="{{url_for("static", filename="vgtu.jpeg")}}">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js" integrity="sha512-dCsuUuqY2+LWlT54ZU8FGK5PdY5flpsT5W8G1TKU+5mNPT5TQ2/Yk2X/+rHwyJaP88m6VJv558kGtWxTYNQDXQ==" crossorigin="anonymous"></script>
+<script>
+  const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+  socket.on('notification', (message) => {
+    console.log(message);
+  });
+</script>
 </head>
 <body>
     <div class="container">
+        <div id="notification" class="notification"></div>
         <h2 class="text-lg text-center">{{ current_user.get_name() }}'s Dashboard</h2>
         <div class="table-container">
             <table>

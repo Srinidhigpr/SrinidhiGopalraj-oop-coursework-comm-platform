@@ -1,4 +1,5 @@
 21 2024-04-30 student3@vgtu.org understood professor comp arc
 23 2024-04-30 student3@vgtu.org last lecture !
 23 2024-04-30 english@vgtu.org I would like to review some notes
-15 2024-04-30 english@vgtu.org you have 1 defense
+23 2024-05-01 english@vgtu.org you got a 10 on exam
+59 2024-05-01 student1@vgtu.org have a question on linearity
