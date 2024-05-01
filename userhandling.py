@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from eventhandling import consultation_hour
+from datetime import time
 
 
 class User:

@@ -103,6 +103,7 @@ class consultation_hour:
     @handle_file_errors
     @staticmethod
     def remove_consultation_request(event, event_no):
+        print("inside remove consultation ")
         with open('events.txt', "r") as f:
             events = f.readlines()
             updated_events = [event for event in events if not event.startswith(event_no)]
@@ -113,8 +114,8 @@ class consultation_hour:
             updated_events = [comment for comment in comments if not comment.startswith(event_no)]
         with open('comments.txt', "w") as f:
             f.writelines(updated_events)
-        
-            return event.notify_observers(EventDeletionNotification())
+           
+            return event.notify_observers(EventDeletionNotification(), event)
         
     @handle_file_errors
     @staticmethod

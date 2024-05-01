@@ -2,4 +2,4 @@
 23 2024-04-30 student3@vgtu.org last lecture !
 23 2024-04-30 english@vgtu.org I would like to review some notes
 23 2024-05-01 english@vgtu.org you got a 10 on exam
-59 2024-05-01 student1@vgtu.org have a question on linearity
+25 2024-05-01 student1@vgtu.org I would like to review some notes
