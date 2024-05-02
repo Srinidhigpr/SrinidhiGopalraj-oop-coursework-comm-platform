@@ -9,9 +9,10 @@
 </head>
 <body>
     <div class="container">
-        {% if message %}
+        {% if notification %}
             <div class="alert alert-info" role="alert">
-            {{ message }}
+                {{ notification }}
+            </div>
         {% endif %}
         <h2 class="text-lg text-center">{{ current_user.get_name() }}'s Dashboard</h2>
         <div class="table-container">

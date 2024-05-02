@@ -45,11 +45,12 @@ class CurrentUser:
         if not cls._instance:
             cls._instance = super().__new__(cls)
         return cls._instance
-
+    
     def __init__(self, email, name, event_no):
         self.email = email
         self.name = name
         self.event_no = event_no
+        self.notification  = None
 
     def get_name(self):
         return self.name
@@ -60,6 +61,13 @@ class CurrentUser:
     
     def get_event(self):
         return self.event_no
+    
+    def get_notification(self):
+        return self.notification
+    
+    def set_notification(self, message):
+        self.notification = message
+        return
     
 class CurrentUserStudent(CurrentUser, Student):
     def __init__(self, email, name, event_no):

@@ -8,7 +8,7 @@ class Observer(ABC):
 
 class EventNotification(Observer):
 
-    def update(self, event):
+    def update(self, event, email):
         time_left = event.time_until_event()
         time_left_hours = round(time_left / 60, 2)
         print("in event create observer")
@@ -16,9 +16,9 @@ class EventNotification(Observer):
 
 class EventDeletionNotification(Observer):
 
-    def update(self, event):
+    def update(self, event, email):
         print("in event delete observer")
-        return(f"Notification: Consultation with {event.teacher_email} deleted.")
+        return(f"Notification: Consultation with {email} deleted.")
 
 
 def handle_file_errors(func):
@@ -59,12 +59,12 @@ class consultation_hour:
     def add_observer(self, observer):
         self.observers.append(observer)
 
-    def notify_observers(self, observer, event):
+    def notify_observers(self, observer, event, email):
         print("in notify observers")
         for ob in self.observers:
             if type(ob) == type(observer):
                 print("found observer")
-                return ob.update(event)
+                return ob.update(event, email)
         return "Observer not found "
                 
     
@@ -102,7 +102,7 @@ class consultation_hour:
     
     @handle_file_errors
     @staticmethod
-    def remove_consultation_request(event, event_no):
+    def remove_consultation_request(event, event_no, role):
         print("inside remove consultation ")
         with open('events.txt', "r") as f:
             events = f.readlines()
@@ -114,8 +114,13 @@ class consultation_hour:
             updated_events = [comment for comment in comments if not comment.startswith(event_no)]
         with open('comments.txt', "w") as f:
             f.writelines(updated_events)
-           
-            return event.notify_observers(EventDeletionNotification(), event)
+        if role == 'student':
+            email = event.teacher_email
+        elif role == 'teacher':
+            email = event.student_email
+        else:
+            print("invalid role")
+        return event.notify_observers(EventDeletionNotification(), event, email)
         
     @handle_file_errors
     @staticmethod
@@ -125,7 +130,7 @@ class consultation_hour:
             print("Event added successfully.")
             event.add_observer(EventNotification())
             event.add_observer(EventDeletionNotification())
-            return event.notify_observers(EventNotification(), event)
+            return event.notify_observers(EventNotification(), event, teacher_email)
 
     @handle_file_errors    
     def add_comment(self, event_no, user_email, comment):

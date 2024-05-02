@@ -54,7 +54,7 @@ def dashboard():
     current_user = current_person
     current_user_events = current_user.currentevents 
 
-    message = ''
+    notification = current_user.get_notification()
     if request.method == 'POST':
         action = request.form.get('action')
         if action == 'create_event':
@@ -69,14 +69,15 @@ def dashboard():
             new_event = consultation_hour(current_eventno, current_user.email, teacher_email, startime, endtime)
             current_user_events.append(new_event)
             message = consultation_hour.add_consultation_request(new_event, current_eventno, current_user.email, teacher_email, current_user.format_time(startime), current_user.format_time(endtime))
+            current_user.set_notification(message)
             return redirect("/studentdashboard")
         elif action == 'delete_event':
             eve_no = request.form['event_no']
             for event in current_user_events:
                 if eve_no == event.eventno:
                     current_user.currentevents.remove(event)
-                    message = consultation_hour.remove_consultation_request(event, eve_no)
-                    print(message)
+                    message = consultation_hour.remove_consultation_request(event, eve_no, 'student')
+                    current_user.set_notification(message)
                     return redirect("/studentdashboard")
         elif action == 'add_comment':
             eve_no = request.form['event_no']
@@ -95,7 +96,7 @@ def dashboard():
         elif action == 'logout':
             session.pop('email', None)
             return redirect("/logout")
-    return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers, message=message)
+    return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers, notification=notification)
 
 @app.route("/teacherdashboard", methods=['GET', 'POST'])
 def teachdashboard():
@@ -105,15 +106,15 @@ def teachdashboard():
         return redirect('/')
     current_user = current_person
     current_user_events = current_user.currentevents
-    message = ''
     if request.method == 'POST':
         action = request.form.get('action') 
         if action == 'delete_event':
             eve_no = request.form['event_no']
             for event in current_user_events:
                 if eve_no == event.eventno:
-                    message = consultation_hour.remove_consultation_request(event, eve_no)
+                    message = consultation_hour.remove_consultation_request(event, eve_no, 'teacher')
                     current_user.currentevents.remove(event)
+                    current_user.set_notification(message)
                     return redirect("/teacherdashboard")
         elif action == 'add_comment':
             eve_no = request.form['event_no']
@@ -133,7 +134,7 @@ def teachdashboard():
         elif action == 'logout':
             session.pop('email', None)
             return redirect("/logout")
-    return render_template('teacherdashboard.html', current_user=current_user, students=Students, message=message)
+    return render_template('teacherdashboard.html', current_user=current_user, students=Students, notification=current_user.get_notification())
 
 @app.route("/logout", methods=['GET', 'POST'])
 def loggingout():

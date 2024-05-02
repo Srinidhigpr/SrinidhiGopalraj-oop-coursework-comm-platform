@@ -1,5 +1,4 @@
 9 student2@vgtu.org electricalengg@vgtu.org 13:50 17:30
 21 student3@vgtu.org comparc@vgtu.org 13:15 14:00
-23 student3@vgtu.org english@vgtu.org 10:00 12:00
-25 student1@vgtu.org electricalengg@vgtu.org 13:50 17:30
-27 student1@vgtu.org discretemaths@vgtu.org 14:00 14:30
+31 student1@vgtu.org english@vgtu.org 10:00 12:00
+33 student1@vgtu.org electricalengg@vgtu.org 13:50 17:30
