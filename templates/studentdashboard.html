@@ -10,8 +10,10 @@
 <body>
     <div class="container">
         {% if notification %}
-            <div class="alert alert-info" role="alert">
-                {{ notification }}
+            <div class="wrapper">
+                <div class="alert alert-info" role="alert">
+                    {{ notification }}
+                </div>
             </div>
         {% endif %}
       

@@ -10,10 +10,12 @@
 <body>
     <div class="container">
         {% if notification %}
+        <div class="wrapper">
             <div class="alert alert-info" role="alert">
                 {{ notification }}
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
         <h2 class="text-lg text-center">{{ current_user.get_name() }}'s Dashboard</h2>
         <div class="table-container">
             <h3 class="text-lg text-center">Your Events</h3>

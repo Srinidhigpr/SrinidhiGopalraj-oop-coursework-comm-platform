@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(203, 241, 213);
+    background-color: #0B4DC7;
   }
   
   .container {
@@ -7,53 +7,74 @@ body {
   }
   
   h2 {
+    color : white;
     margin-bottom: 20px;
-    margin-top: 40px; 
+    margin-top: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); 
   }
   
   h3 {
+    color : white;
     margin-bottom: 20px;
     margin-top: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
   
-  .table-container {
-    width: 75%;
-    margin: 20px auto; 
-  }
-  
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  th, td {
-    border: 3px solid #14235e;
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #a7e39d;
-  }
-  
-  tr:nth-child(odd) {
-    background-color: #d2edc7;
-  }
+.table-container {
+  width: 75%;
+  margin: 20px auto;
+   
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.75);
+  border: 1px solid #ccc;
+  overflow: hidden; /* Hide overflow to prevent pseudo-elements from protruding */
+  position: relative;
+}
+
+th, td {
+  border: 2px solid #ccc; 
+  text-align: center; 
+  padding: 10px; 
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; 
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff; 
+}
+
+th:first-child {
+  border-top-left-radius: 7px;
+}
+th:last-child {
+  border-top-right-radius: 7px;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 7px;
+}
+tr:last-child td:last-child {
+  border-bottom-right-radius: 7px;
+}
   
   
   .button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px; 
+    border-color: #00DDA5;
+  color: #180c0c;
+  padding: 15px 30px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  background-color: #00DDA5
   }
   
   
@@ -61,6 +82,13 @@ body {
   .button:hover,
   .button:visited,
   .button:active {
-      color: rgb(0, 0, 0);
-      text-decoration: none;
+    background-color: #14f5bc;
+    border-color: #0bf1b8;
+  }
+  .wrapper {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px; 
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5); 
+  
   }
