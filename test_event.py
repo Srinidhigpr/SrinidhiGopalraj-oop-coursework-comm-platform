@@ -18,8 +18,8 @@ class ConsultationTestCase(unittest.TestCase):
 
 
     def test_remove_consultation_request(self):
-        event = consultation_hour(1, self.student_email, self.teacher_email, self.start_time, self.end_time)
-        consultation_hour.remove_consultation_request(event, 1, 'student') 
+        event = consultation_hour(7000, self.student_email, self.teacher_email, self.start_time, self.end_time)
+        consultation_hour.remove_consultation_request(event, 7000, 'student') 
         self.assertNotIn(event, consultation_hour.get_consultations_request(self.student_email))
 
 if __name__ == '__main__':
