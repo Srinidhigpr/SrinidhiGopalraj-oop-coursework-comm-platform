@@ -75,7 +75,6 @@ class CurrentUserStudent(CurrentUser, Student):
         self.currentevents = consultation_hour.get_consultations_request(self.email)
 
     def append_event(self, Event):
-        print("event added from class side")
         self.currentevents.append(Event)
 
     def get_teacher_name(self, email, teachers_list):

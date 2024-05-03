@@ -11,13 +11,11 @@ class EventNotification(Observer):
     def update(self, event, email):
         time_left = event.time_until_event()
         time_left_hours = round(time_left / 60, 2)
-        print("in event create observer")
         return (f"Notification: You have {time_left_hours} hours until the consultation starts.")
 
 class EventDeletionNotification(Observer):
 
     def update(self, event, email):
-        print("in event delete observer")
         return(f"Notification: Consultation with {email} deleted.")
 
 
@@ -40,7 +38,7 @@ def consultation_no():
         for line in f:
             event_data = line.strip().split()
             if len(event_data) != 5:
-                print("Invalid format found while checking event no")
+                print("Invalid format found on file")
                 continue
             num_events = int(event_data[0]) + 1
     return num_events
@@ -60,10 +58,8 @@ class consultation_hour:
         self.observers.append(observer)
 
     def notify_observers(self, observer, event, email):
-        print("in notify observers")
         for ob in self.observers:
             if type(ob) == type(observer):
-                print("found observer")
                 return ob.update(event, email)
         return "Observer not found "
                 
@@ -79,7 +75,6 @@ class consultation_hour:
                     print("issue with current event format", current_event_data)
                     continue
                 if current_event_data[1] == email or current_event_data[2] == email:
-                    print("got an event for user")
                     current_event = consultation_hour(current_event_data[0], current_event_data[1], current_event_data[2], current_event_data[3], current_event_data[4])
                     all_user_events.append(current_event)
                     current_event.add_observer(EventNotification())
@@ -103,7 +98,6 @@ class consultation_hour:
     @handle_file_errors
     @staticmethod
     def remove_consultation_request(event, event_no, role):
-        print("inside remove consultation ")
         with open('events.txt', "r") as f:
             events = f.readlines()
             updated_events = [event for event in events if not event.startswith(event_no)]
@@ -138,7 +132,6 @@ class consultation_hour:
         self.updates.append((timestamp, user_email, comment))
         with open('comments.txt', 'a') as f:
             f.write(f"{event_no} {timestamp} {user_email} {comment}\n")
-            print("comment printed from event class side")
         return
     
     def print_comments(self):

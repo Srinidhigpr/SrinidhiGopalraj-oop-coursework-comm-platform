@@ -83,15 +83,10 @@ def dashboard():
             eve_no = request.form['event_no']
             current_user.set_event(int(eve_no))
             if 'comment' in request.form:
-                print("there was a comment")
                 comment = request.form['comment']
                 for event in current_user_events:
-                    print( "my event no", event.eventno)
-                    print('received eve no', eve_no)
                     if int(event.eventno) == int(eve_no):  
-                        print("found event in my events")
                         event.add_comment(eve_no, current_user.email, comment)
-                        print("comment added from app side")
                         return redirect("/studentdashboard")
         elif action == 'logout':
             session.pop('email', None)
@@ -119,17 +114,11 @@ def teachdashboard():
         elif action == 'add_comment':
             eve_no = request.form['event_no']
             current_user.set_event(int(eve_no))
-            print("comment button pressed")
             if 'comment' in request.form:
-                print("there was a comment from teacher")
                 comment = request.form['comment']
                 for event in current_user_events:
-                    print( "my event no", event.eventno)
-                    print('received eve no', eve_no)
                     if int(event.eventno) == int(eve_no):  
-                        print("found event in my events")
                         event.add_comment(eve_no, current_user.email, comment)
-                        print("comment added from app side")
                         return redirect("/teacherdashboard")
         elif action == 'logout':
             session.pop('email', None)
