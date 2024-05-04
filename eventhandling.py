@@ -83,7 +83,7 @@ class consultation_hour:
             for line in f:
                 current_comment_data = line.strip().split()
                 if len(current_comment_data) < 4:
-                    print("issue with current event format", current_comment_data)
+                    print("issue with current comment format", current_comment_data)
                     continue
                 event_number = current_comment_data[0]
                 date = current_comment_data[1]
@@ -100,12 +100,12 @@ class consultation_hour:
     def remove_consultation_request(event, event_no, role):
         with open('events.txt', "r") as f:
             events = f.readlines()
-            updated_events = [event for event in events if not event.startswith(event_no)]
+            updated_events = [event for event in events if not event.startswith(str(event_no))]
         with open('events.txt', "w") as f:
             f.writelines(updated_events)
         with open('comments.txt', "r") as f:
             comments = f.readlines()
-            updated_events = [comment for comment in comments if not comment.startswith(event_no)]
+            updated_events = [comment for comment in comments if not comment.startswith(str(event_no))]
         with open('comments.txt', "w") as f:
             f.writelines(updated_events)
         if role == 'student':

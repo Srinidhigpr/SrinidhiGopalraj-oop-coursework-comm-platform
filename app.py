@@ -52,8 +52,8 @@ def dashboard():
         flash("User not found.", "error")
         return redirect('/')
     current_user = current_person
-    current_user_events = current_user.currentevents 
-
+    current_user_events = current_user.currentevents
+   
     notification = current_user.get_notification()
     if request.method == 'POST':
         action = request.form.get('action')
@@ -73,10 +73,15 @@ def dashboard():
             return redirect("/studentdashboard")
         elif action == 'delete_event':
             eve_no = request.form['event_no']
+            print("requested event number" , eve_no)
+            print("inside delete event")
             for event in current_user_events:
-                if eve_no == event.eventno:
+                print("available event no", event.eventno)
+                if int(eve_no) == int(event.eventno):
+                    print("found event")
                     current_user.currentevents.remove(event)
                     message = consultation_hour.remove_consultation_request(event, eve_no, 'student')
+                    print("sent request")
                     current_user.set_notification(message)
                     return redirect("/studentdashboard")
         elif action == 'add_comment':
@@ -91,7 +96,7 @@ def dashboard():
         elif action == 'logout':
             session.pop('email', None)
             return redirect("/logout")
-    return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers, notification=notification)
+    return render_template('studentdashboard.html', current_user=current_user, teachers=Teachers, notification=notification, current_user_events=current_user_events)
 
 @app.route("/teacherdashboard", methods=['GET', 'POST'])
 def teachdashboard():
