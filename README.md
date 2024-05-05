@@ -165,7 +165,7 @@ class CurrentUserTeacher(CurrentUser, Teacher):
 ```
 Abstraction is also present in my use of the observer design pattern, which will be discussed in further sections.
  #### c) Inheritance - 
- Inheritance is a concept in that allows classes to inherit attributes and methods from other classes. It promotes code reusability and establishes relationships between classes based on a hierarchical structure. In my code, I have presented two types of inheritance.
+ Inheritance is a concept in that allows classes to **inherit attributes** and methods from other classes. It promotes **code reusability** and establishes relationships between classes based on a **hierarchical structure**. In my code, I have presented two types of inheritance.
  - Single level Inheritance - when Child classes Student and Teacher inherit attributes and methods from parent class user 
  ```
  class User:
@@ -213,7 +213,7 @@ class CurrentUserTeacher(CurrentUser, Teacher):
     ...
 ```
 #### d) Encapsulation - 
-Encapsulation is the concept of bundling of data and methods that operate on the data within a single unit or class. It restricts direct access to some of the object's components, providing controlled access through methods
+Encapsulation is the concept of **bundling of data and methods** that operate on the data within a single unit or class. It **restricts direct access** to some of the object's components, providing **controlled access through methods**
 
 - The user class encapsulates user data such as email, name, and password. Here, we've made the attribute password private, only allowing acces through the 'check_password' method.
 ``` 
@@ -305,10 +305,10 @@ class consultation_hour:
         ...
 ```
 
-### 2. design patterns implemented in this project 📝
+### 2. Design patterns implemented in this project 📝
 My program implements four different design patterns : Singleton, Factory, Observer and Decorator.
 #### a) Singleton -
-The Singleton is a creational design pattern that ensures a class has only one instance and provides a global point of access to that instance. In my code, the Singleton pattern is implemented in the CurrentUser class. THis is to save the details of the user in that particular session, and to be able to access it across the different flask route with greater ease. This makes sure that noone can tamper with or change current user throughout runtime.
+The Singleton is a **creational design pattern** that ensures a class has **only one instance** and provides a **global point of access** to that instance. In my code, the Singleton pattern is implemented in the CurrentUser class. This is to save the details of the user in that particular session, and to be able to access it across the different flask route with greater ease. This makes sure that no-one can tamper with or change current user throughout runtime.
 ```
 class CurrentUser:
     _instance = None 
@@ -325,7 +325,7 @@ class CurrentUser:
         self.notification  = None
 ```
 #### b) Factory - 
-The Factory Method is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclasses to alter the type of objects that will be created. In my code, the Factory Method Pattern is implemented in the UserFactory class. Depending on the value of the role parameter, the factory method creates and returns an instance of either CurrentUserStudent or CurrentUserTeacher.
+The Factory Method is a **creational design pattern** that provides an **interface for creating objects** in a superclass, but allows subclasses to **alter the type of objects** that will be created. In my code, the Factory Method Pattern is implemented in the UserFactory class. Depending on the value of the role parameter, the factory method creates and returns an instance of either CurrentUserStudent or CurrentUserTeacher.
 ```
 class UserFactory:
     @staticmethod
@@ -338,7 +338,7 @@ class UserFactory:
             raise ValueError("Invalid user role")
 ```
 #### c) Observer -
-The Observer pattern is a behavioral design pattern where an object, called the subject, maintains a list of dependents, called observers, and notifies them of any state changes, usually by calling one of their methods. In my code, it is implemented through the abstract class Observer, observers EventNotification and EventDeletionNotification classes which are the concerte classes that implement the update method. THis is connected to the consultation_hour class where these observers are added and notified. 
+The Observer pattern is a **behavioral design pattern** where an object, called the subject, **maintains a list of dependents**, called observers, and **notifies them of any state changes**, usually by calling one of their methods. In my code, it is implemented through the abstract class Observer, observers EventNotification and EventDeletionNotification classes which are the concerte classes that implement the update method. THis is connected to the consultation_hour class where these observers are added and notified. 
 > in my program, this pattern is only used to present notifications on the webpage. However, They can also be used to deploy google calender invitations or push notifications without changing the main framework, thus presenting the power of this pattern. 
 
 ```
@@ -372,7 +372,7 @@ class consultation_hour:
 
 ```
 #### d) Decorator - 
-The Decorator pattern is a structural design pattern that allows behavior to be added to individual objects dynamically, without affecting the behavior of other objects from the same class. It's achieved by creating a set of decorator classes that are used to wrap concrete components. In my code, it is implemented to wrap fuctions which require file handling with the relevent file checking code, instead of writing code for this verification into each and every function. One example of its implementation is shown  completely and the rest are omiited from the code block below. 
+The Decorator pattern is a **structural design pattern** that allows behavior to be added to individual objects **dynamically, without affecting the behavior** of other objects from the same class. It's achieved by creating a set of decorator classes that are used to wrap concrete components. In my code, it is implemented to wrap fuctions which require file handling with the relevent file checking code, instead of writing code for this verification into each and every function. One example of its implementation is shown  completely and the rest are omitted from the code block below. 
 ```
 def handle_file_errors(func):
     def wrapper(*args, **kwargs):
@@ -424,10 +424,10 @@ class consultation_hour:
     ...
 ```
 ### 3. File handling functionalities
-My code Includes the required read/write/append functionalities required of this project.The consultation_hour class and its methods, such as get_consultations_request, remove_consultation_request, and add_consultation_request, read from and write to files 'events.txt' and 'comments.txt'. These methods handle consultation events and comments associated with them, reading data from files to retrieve existing events and writing data to files to add, remove, or modify events and comments. The handle_file_errors decorator is used to handle file-related errors in methods such as consultation_no and various methods in the consultation_hour class.
+My code **Includes the required read/write/append functionalities** required of this project.The consultation_hour class and its methods, such as get_consultations_request, remove_consultation_request, and add_consultation_request, read from and write to files **'events.txt' and 'comments.txt'**. These methods handle consultation events and comments associated with them, reading data from files to retrieve existing events and writing data to files to **add, remove, or modify events and comments**. The handle_file_errors decorator is used to handle file-related errors in methods such as consultation_no and various methods in the consultation_hour class.
 
 ### 4. Unit tests 
-Unit testing is a software testing approach where individual units or components of a program are tested in isolation to ensure they behave as expected. It helps verify that each part of the software performs correctly and meets its design specifications. In my code, unit testing is implemented using the unittest module, which provides a framework for writing and executing test cases. 
+Unit testing is a software testing approach where individual units or components of a program are **tested in isolation** to ensure they behave as expected. It helps **verify that each part** of the software performs correctly and meets its design specifications. In my code, unit testing is implemented using the unittest module, which provides a framework for writing and executing test cases. 
 ```
 class ConsultationTestCase(unittest.TestCase):
     def setUp(self):
@@ -466,10 +466,10 @@ Here we have the test class ConsultationTestCase which inherits from unittest.te
 ## The Results of this program 💡
 From this project and developing this program, I've learnt to :
 
-- Build a Communication/managagement system from scratch
-- understand how to choose design patterns based on the requirements of a program
-- build a unit testing system to debug more efficiently
-- develop and deploy a Flask Application and to better use CSS for HTML
+- Build a **Communication/managagemen**t system from scratch
+- understand how to choose **design patterns** based on the requirements of a program
+- build a unit testing system to **debug more efficiently**
+- develop and **deploy a Flask Application** and to better use CSS for HTML
 
 Challenges I've faced during this Project:
 
@@ -478,10 +478,12 @@ Challenges I've faced during this Project:
 - It took some time to learn how to clone and deploy my project externally, and how to dynamically update the requirements file needed for the deployment
 
 ## What has my work achieved ? and the future prospects of my project 🔮
-As mentioned before, this platform was built on the idea of transparency and open communication between students and lecturers about the happenings of their consultation hours. These hours serve as a great opportunity for students to deepen their understanding of the subject and understand it better from the professors perspective and anecdotes in a way thats different to traditional lectures. Hence with more communication and transparency about consultation hours, we can raise footfall, Increasing the overall level general understanding of subjects for more students than before. 
+As mentioned before, this platform was built on the **idea of transparency and open communication between students and lecturers** about the **happenings of their consultation hours**. These hours serve as a great opportunity for students to **deepen their understanding** of the subject and understand it better from the professors perspective and anecdotes in a way thats different to traditional lectures. Hence with more communication and transparency about consultation hours,** we can raise footfall**, Increasing the overall level general understanding of subjects, for more students than before. 
 
-With the possibility to write to your lecturer about your reason of arrival, the Teacher is able to : Be prepared for your questions, or Inform you that your quires will be resolved in another fashion, saving time for both parties - as a contrast to the current situation of constant interruptions during lectures of the whereabouts and reasons for attending consultation hours. 
+With the possibility to write to your lecturer about your reason of arrival, the Teacher is able to : **Be prepared** for your questions, or Inform you that your queries will be resolved in another fashion, **saving time** for both parties - as a contrast to the current situation of constant interruptions during lectures of the whereabouts and reasons for attending consultation hours. 
 
-This platform is the first step towards this cause. 
+This platform is **the first step** towards this cause. 
 
-As for the future, I can see this application being a positive addition to the Vilnius Tech family of services for students, mimicing the convinience that the work-room reservation platform has given us. As mentioned above, the application can be updated to have more capabilites such as sending google/outlook calender invites, setting reminders and much more. In the case where integration into Vilnius Tech services is not possible, this Idea can be developed to be a standalone platform open to all universitities, where teachers can sign up to streamline their reservations and for the convinience of being able to see all that are arriving and why, giving them a chance to see the people and their purpose of visit, allowing them to be more productive. 
+As for the future, I can see this application being a **positive addition to the Vilnius Tech family of services for students**, mimicing the convinience that the work-room reservation platform has given us. As mentioned above, the application can be updated to have **more capabilites**such as sending google/outlook calender invites, setting reminders and much more. 
+
+In the case where integration into Vilnius Tech services is not possible, this Idea can be developed to be a **standalone platform open to all universitities**, where teachers can sign up to **streamline their reservations** and for the convinience of being able to see all that are arriving and why, giving them a chance to see the people and their purpose of visit, allowing them to be **more productive**. 
