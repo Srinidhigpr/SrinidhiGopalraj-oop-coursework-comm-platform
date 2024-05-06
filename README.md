@@ -37,7 +37,7 @@ Teachers:
 #### a) Polymorphism -
 Polymorphism is a concept that allows objects of different classes to be **treated as objects of a common superclass**, while giving each of them **different functionalities**. In essence, you are giving different classes the ability to operate on, as if they were of the same class, but giving each of them the **capability to have different** charecteristics and behaviours.
 
-```
+```python
 class User:
     def __init__(self, email, name, password):
         self.email = email
@@ -66,7 +66,7 @@ class Teacher(User):
 ```
 
 We're able to see that since classes Student and Teacher inherit from class User, we can apply the check passowrd method to both of them as if they were both of class User. The implentation in the main code is as below.
-```
+```python
 for person in Teachers:
             if person.email == user_email and person.check_password(passcode):
                 found = True
@@ -81,7 +81,7 @@ for person in Teachers:
                     ...
 ```
 As I mentioned above, we can see how method overriding plays into polymorphism below with out implementation of class Teacher and subclasses LabTeacher and TheoryTeacher. We're able to call the same method on instances of both classes as if they were of the same class, but have given them different behaviour.
-```
+```python
 class Teacher(User):
     def __init__(self, email, name, password, start_time, end_time, subject):
         super().__init__(email, name, password)
@@ -105,7 +105,7 @@ class LabTeacher(Teacher):
 ```
 #### b) Abstraction - 
 Abstraction is a concept that involves **hiding the complex implementation** details of a system while **exposing only the essential features** or functionalities. In my code, abstraction is presented through the use of a User superclass and the observer design pattern. The User class encapsulates data related to a user's email, name, and password, as well as the method to check password, therfore hides the internal representation of user data and how password verification is performed, which is a key aspect of abstraction. The same can be said for what the class CurrentUser does for the subclasses CurrentUserStudent and CurrentUserTeacher.
-```
+```python
 class User:
     def __init__(self, email, name, password):
         self.email = email
@@ -167,7 +167,7 @@ Abstraction is also present in my use of the observer design pattern, which will
  #### c) Inheritance - 
  Inheritance is a concept in that allows classes to **inherit attributes** and methods from other classes. It promotes **code reusability** and establishes relationships between classes based on a **hierarchical structure**. In my code, I have presented two types of inheritance.
  - Single level Inheritance - when Child classes Student and Teacher inherit attributes and methods from parent class user 
- ```
+ ```python
  class User:
     def __init__(self, email, name, password):
         self.email = email
@@ -194,7 +194,7 @@ class Teacher(User):
 ```
 - multi-level inheritance and multiple inheritance - multi-level inheritance ocuurs when classes inherit from other classes that themselves have a hierarchical structure of inheritance. Here we can see that CurrentUserStudent and CurrentUserTeacher both inherit from not only Current user but also from classes Student and Teacher Respectively, both of which inherit from class User. multiple inheritance occurs when a class has mustiple parent classes, as we can see with CurrentUserStudent and CurrentUserTeacher. 
 
-```
+```python
 class User:
     ....
     
@@ -216,7 +216,7 @@ class CurrentUserTeacher(CurrentUser, Teacher):
 Encapsulation is the concept of **bundling of data and methods** that operate on the data within a single unit or class. It **restricts direct access** to some of the object's components, providing **controlled access through methods**
 
 - The user class encapsulates user data such as email, name, and password. Here, we've made the attribute password private, only allowing acces through the 'check_password' method.
-``` 
+```python
 class User:
     def __init__(self, email, name, password):
         self.email = email
@@ -229,7 +229,7 @@ class User:
         return False
 ```
 - The Current user class class encapsulates data related to the current user session, such as email, name, event_no, and notification. Methods like get_name, set_event, get_event, get_notification, and set_notification provide controlled access to this data.
-```
+```python
 class CurrentUser:
     _instance = None 
     def __new__(cls, *args, **kwargs):
@@ -262,7 +262,7 @@ class CurrentUser:
 
 ```
 - The consultation hour class encapsulates data related to a consultation event, such as event number, student email, teacher email, start time, end time, and comments. These attributes are defined within the class and are accessed and manipulated through class methods. Access to the event data attributes is controlled through methods provided by the consultation_hour class, such as add_observer, notify_observers, add_comment, and time_until_event. These methods ensure that the internal representation of event data is hidden from external interference.
-```
+```python
 class consultation_hour:
     def __init__(self, eventno, student_email, teacher_email, start_time, end_time):
         self.eventno = eventno
@@ -309,7 +309,7 @@ class consultation_hour:
 My program implements four different design patterns : Singleton, Factory, Observer and Decorator.
 #### a) Singleton -
 The Singleton is a **creational design pattern** that ensures a class has **only one instance** and provides a **global point of access** to that instance. In my code, the Singleton pattern is implemented in the CurrentUser class. This is to save the details of the user in that particular session, and to be able to access it across the different flask route with greater ease. This makes sure that no-one can tamper with or change current user throughout runtime.
-```
+```python
 class CurrentUser:
     _instance = None 
 
@@ -326,7 +326,7 @@ class CurrentUser:
 ```
 #### b) Factory - 
 The Factory Method is a **creational design pattern** that provides an **interface for creating objects** in a superclass, but allows subclasses to **alter the type of objects** that will be created. In my code, the Factory Method Pattern is implemented in the UserFactory class. Depending on the value of the role parameter, the factory method creates and returns an instance of either CurrentUserStudent or CurrentUserTeacher.
-```
+```python
 class UserFactory:
     @staticmethod
     def create_user(email, name, role):
@@ -341,7 +341,7 @@ class UserFactory:
 The Observer pattern is a **behavioral design pattern** where an object, called the subject, **maintains a list of dependents**, called observers, and **notifies them of any state changes**, usually by calling one of their methods. In my code, it is implemented through the abstract class Observer, observers EventNotification and EventDeletionNotification classes which are the concerte classes that implement the update method. THis is connected to the consultation_hour class where these observers are added and notified. 
 > in my program, this pattern is only used to present notifications on the webpage. However, They can also be used to deploy google calender invitations or push notifications without changing the main framework, thus presenting the power of this pattern. 
 
-```
+```python
 class Observer(ABC):
     @abstractmethod
     def update(self, event):
@@ -373,7 +373,7 @@ class consultation_hour:
 ```
 #### d) Decorator - 
 The Decorator pattern is a **structural design pattern** that allows behavior to be added to individual objects **dynamically, without affecting the behavior** of other objects from the same class. It's achieved by creating a set of decorator classes that are used to wrap concrete components. In my code, it is implemented to wrap fuctions which require file handling with the relevent file checking code, instead of writing code for this verification into each and every function. One example of its implementation is shown  completely and the rest are omitted from the code block below. 
-```
+```python
 def handle_file_errors(func):
     def wrapper(*args, **kwargs):
        try:
@@ -428,7 +428,7 @@ My code **Includes the required read/write/append functionalities** required of 
 
 ### 4. Unit tests 
 Unit testing is a software testing approach where individual units or components of a program are **tested in isolation** to ensure they behave as expected. It helps **verify that each part** of the software performs correctly and meets its design specifications. In my code, unit testing is implemented using the unittest module, which provides a framework for writing and executing test cases. 
-```
+```python
 class ConsultationTestCase(unittest.TestCase):
     def setUp(self):
         self.student_email = 'student1@vgtu.org'
